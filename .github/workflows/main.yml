@@ -28,5 +28,5 @@ jobs:
         run: npm install
 
       # Runs Build
-      - name: NPM Execute build and creates tsdx files
+      - name: NPM Execute build
         run: npm run build
