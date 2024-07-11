@@ -20,7 +20,7 @@ import {
 import { useState } from "react"
 
 const FormCheckboxes = () => {
-  const [checkBoxValues, setCheckBoxValues] = useState<[]>([])
+  const [checkBoxValues, setCheckBoxValues] = useState<string[]>([])
 
   const handleCheckBoxChange = (values: CheckBoxDataProps[]) => {
     setCheckBoxValues(mapCheckBoxListToArray(values))

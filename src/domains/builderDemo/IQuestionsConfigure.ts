@@ -1,34 +1,38 @@
-import { RadioButtonDataProps } from "@pa-digital/govuk-frontend-react";
-import * as yup from "yup";
+import { RadioButtonDataProps } from "@pa-digital/govuk-frontend-react"
+import * as yup from "yup"
 export const questionConfigureSchema = yup.object().shape({
   required: yup
-    .mixed<RadioButtonDataProps[]>()
+    .array()
+    .of(
+      yup.object().shape({
+        text: yup.string().required(),
+        value: yup.string().required(),
+        hint: yup.string().optional(),
+        divider: yup.boolean().optional(),
+        checked: yup.boolean().optional()
+      })
+    )
     .test(
       "must be checked",
       "You must decide if the question is required",
-      (value: RadioButtonDataProps[] | undefined) => {
-        if (value && value.findIndex((x) => x.checked) >= 0) {
-          return true;
-        }
-        return false;
-      }
+      value => value?.some(x => x.checked) || false
     ),
-  help: yup.string().trim(),
+  help: yup.string().trim().required(),
   error: yup
     .string()
     .trim()
-    .when("required", (required, field) => {
-      const values: RadioButtonDataProps[] =
-        required as unknown as RadioButtonDataProps[];
-      const selectedValue = values.find((x) => x.checked)?.value || "";
-      return selectedValue === "true"
-        ? field.required("You must enter an error message")
-        : field;
-    }),
-});
+    .when("required", {
+      is: (required: RadioButtonDataProps[]) => {
+        const selectedValue = required.find(x => x.checked)?.value || ""
+        return selectedValue === "true"
+      },
+      then: schema => schema.required("You must enter an error message"),
+      otherwise: schema => schema.optional()
+    })
+})
 
 export interface IQuestionConfigureForm {
-  required: RadioButtonDataProps[];
-  error?: string;
-  help: string;
+  required: RadioButtonDataProps[]
+  error?: string
+  help: string
 }

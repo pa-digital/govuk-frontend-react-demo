@@ -1,25 +1,27 @@
-import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Helmet } from "react-helmet";
+import { Controller, Resolver, ResolverResult, useForm } from "react-hook-form"
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { Helmet } from "react-helmet"
 import {
+  CustomFieldError,
   IContactUsForm,
+  IContactUsFormErrors,
   IContactUsRequest,
   mapFormToRequest,
-} from "./IContactUs";
-import { useState } from "react";
+  mapYupErrorsToDateTimeErrors
+} from "./IContactUs"
+import { useState } from "react"
 import {
   BackLink,
   Button,
   CheckBoxDataProps,
   Content,
   DateInput,
-  DateInputState,
   ErrorSummary,
   Header,
   TextInput,
-  CheckBoxList,
-} from "@pa-digital/govuk-frontend-react";
+  CheckBoxList
+} from "@pa-digital/govuk-frontend-react"
 
 const schema = yup.object().shape({
   firstName: yup
@@ -42,109 +44,92 @@ const schema = yup.object().shape({
     .max(100, "Last name must not exceed 100 characters"),
 
   dateOfBirth: yup
-    .mixed<DateInputState>()
-    .test(
-      "required_validation",
-      "You must enter a date",
-      (value: DateInputState | undefined) => {
-        if (
-          value &&
-          value.day === "" &&
-          value.month === "" &&
-          value.year === ""
-        ) {
-          return false;
-        }
-        return true;
-      }
-    )
-    .test(
-      "day_validation",
-      "You must enter a valid day",
-      (value: DateInputState | undefined) => {
-        if (
-          value &&
-          value.day &&
-          parseInt(value.day) > 0 &&
-          parseInt(value.day) <= 31
-        ) {
-          return true;
-        }
-        return false;
-      }
-    )
-    .test(
-      "month_validation",
-      "You must enter a valid month",
-      (value: DateInputState | undefined) => {
-        if (
-          value &&
-          value.month &&
-          parseInt(value.month) > 0 &&
-          parseInt(value.month) <= 12
-        ) {
-          return true;
-        }
-        return false;
-      }
-    )
-    .test(
-      "year_validation",
-      "You must enter a valid year",
-      (value: DateInputState | undefined) => {
-        if (
-          value &&
-          value.year &&
-          parseInt(value.year) > 0 &&
-          parseInt(value.year) <= new Date().getFullYear()
-        ) {
-          return true;
-        }
-        return false;
-      }
-    ),
+    .object()
+    .shape({
+      day: yup
+        .string()
+        .required("Day is required")
+        .matches(/^[0-9]+$/, "Day must be a number")
+        .test("day_validation", "You must enter a valid day", (value, context) => {
+          const { month, year } = context.parent
+          const parsedValue = parseInt(value, 10)
+          if (!parsedValue) return false
+          const maxDays = new Date(year, parseInt(month, 10), 0).getDate()
+          return parsedValue > 0 && parsedValue <= maxDays
+        }),
+      month: yup
+        .string()
+        .required("Month is required")
+        .matches(/^[0-9]+$/, "Month must be a number")
+        .test("month_validation", "You must enter a valid month", value => {
+          const parsedValue = parseInt(value, 10)
+          return parsedValue > 0 && parsedValue <= 12
+        }),
+      year: yup
+        .string()
+        .required("Year is required")
+        .matches(/^[0-9]+$/, "Year must be a number")
+        .test("year_validation", "You must enter a valid year", value => {
+          const parsedValue = parseInt(value, 10)
+          return parsedValue > 0 && parsedValue <= new Date().getFullYear()
+        })
+    })
+    .required("Date of birth is required"),
 
   interests: yup
-    .array<CheckBoxDataProps>()
+    .array(
+      yup.object().shape({
+        text: yup.string().required(),
+        value: yup.string().required(),
+        hint: yup.string(),
+        divider: yup.boolean(),
+        exclusive: yup.boolean(),
+        checked: yup.boolean()
+      })
+    )
     .test(
       "interest_validation",
       "You must select at least one interest",
-      (value: CheckBoxDataProps[] | undefined) => {
-        if (value && value.filter((x) => x.checked).length > 0) {
-          return true;
-        }
-        return false;
-      }
-    ),
-});
+      value => value?.some(x => x.checked) || false
+    )
+    .required("Interests are required")
+})
 
 const InterestsData: CheckBoxDataProps[] = [
   {
     text: "React",
-    value: "react",
+    value: "react"
   },
   {
     text: "Node JS",
-    value: "nodejs",
+    value: "nodejs"
   },
   {
     text: "Astro",
-    value: "astro",
+    value: "astro"
   },
   {
     text: "Accessibility",
-    value: "accessibility",
-  },
-];
+    value: "accessibility"
+  }
+]
 
 const ContactUs = () => {
-  const [submittedData, setSubmittedData] = useState<IContactUsRequest>();
+  const [submittedData, setSubmittedData] = useState<IContactUsRequest>()
+  const customYupResolver: Resolver<IContactUsForm> = async (data, context, options) => {
+    const resolverResult = await yupResolver(schema)(data, context, options)
+
+    return {
+      values: resolverResult.values,
+      errors: mapYupErrorsToDateTimeErrors(resolverResult.errors as IContactUsFormErrors)
+    } as ResolverResult<IContactUsForm>
+  }
   const {
     formState: { errors },
     control,
-    handleSubmit,
+    handleSubmit
   } = useForm<IContactUsForm>({
-    resolver: yupResolver(schema),
+    resolver: customYupResolver,
     shouldFocusError: true,
     mode: "onSubmit",
     reValidateMode: "onSubmit",
@@ -155,25 +140,22 @@ const ContactUs = () => {
       dateOfBirth: {
         day: "",
         month: "",
-        year: "",
+        year: ""
       },
-      interests: InterestsData,
-    },
-  });
+      interests: InterestsData
+    }
+  })
 
   const onSubmit = (formData: IContactUsForm) => {
-    setSubmittedData(mapFormToRequest(formData));
-    return false;
-  };
+    setSubmittedData(mapFormToRequest(formData))
+    return false
+  }
 
   return (
     <>
       <Helmet>
         <meta name="keywords" content="Contact us, get in touch" />
-        <meta
-          name="description"
-          content="Get in touch to register your interests"
-        />
+        <meta name="description" content="Get in touch to register your interests" />
         <title>Register your interests</title>
       </Helmet>
       <div className="govuk-width-container" id="content">
@@ -183,8 +165,8 @@ const ContactUs = () => {
             <div className="govuk-grid-column-full">
               <Header as="h1">Example Form - Registration</Header>
               <Content>
-                The following form shows how a user is validated on registering.
-                The succesful data is shown after completion.
+                The following form shows how a user is validated on registering. The succesful data
+                is shown after completion.
               </Content>
               <hr />
             </div>
@@ -193,17 +175,12 @@ const ContactUs = () => {
             <div className="govuk-grid-column-full">
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Header as="h2">Register</Header>
-                <Content>
-                  Please register your interest using the form below.
-                </Content>
+                <Content>Please register your interest using the form below.</Content>
                 <ErrorSummary identifier="error-summary" errors={errors} />
                 <Controller
                   control={control}
                   name="firstName"
-                  render={({
-                    field: { value, onChange, onBlur },
-                    fieldState: { error },
-                  }) => (
+                  render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                     <TextInput
                       identifier="firstName"
                       label="First name"
@@ -219,10 +196,7 @@ const ContactUs = () => {
                 <Controller
                   control={control}
                   name="lastName"
-                  render={({
-                    field: { value, onChange, onBlur },
-                    fieldState: { error },
-                  }) => (
+                  render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                     <TextInput
                       identifier="lastName"
                       label="Last name"
@@ -238,10 +212,7 @@ const ContactUs = () => {
                 <Controller
                   control={control}
                   name="email"
-                  render={({
-                    field: { value, onChange, onBlur },
-                    fieldState: { error },
-                  }) => (
+                  render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                     <TextInput
                       identifier="email"
                       label="Email"
@@ -258,28 +229,26 @@ const ContactUs = () => {
                 <Controller
                   control={control}
                   name="dateOfBirth"
-                  render={({
-                    field: { value, onChange },
-                    fieldState: { error },
-                  }) => (
-                    <DateInput
-                      identifier="dateOfBirth"
-                      label="Date of birth"
-                      required
-                      multiQuestion
-                      error={error?.message}
-                      value={value}
-                      onValueChange={onChange}
-                    />
-                  )}
+                  render={({ field: { value, onChange }, fieldState: { error } }) => {
+                    const customError = error as CustomFieldError
+                    return (
+                      <DateInput
+                        identifier="dateOfBirth"
+                        label="Date of birth"
+                        required
+                        multiQuestion
+                        error={customError?.error}
+                        errorType={customError?.errorType}
+                        value={value}
+                        onValueChange={onChange}
+                      />
+                    )
+                  }}
                 />
                 <Controller
                   control={control}
                   name="interests"
-                  render={({
-                    field: { value, onChange },
-                    fieldState: { error },
-                  }) => (
+                  render={({ field: { value, onChange }, fieldState: { error } }) => (
                     <CheckBoxList
                       identifier="interests"
                       header="Which of these interest you"
@@ -304,16 +273,14 @@ const ContactUs = () => {
                 </div>
               </div>
               <div className="govuk-grid-column-full">
-                <Content as="pre">
-                  {JSON.stringify(submittedData, null, 2)}
-                </Content>
+                <Content as="pre">{JSON.stringify(submittedData, null, 2)}</Content>
               </div>
             </>
           )}
         </main>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ContactUs;
+export default ContactUs

@@ -5,30 +5,30 @@ import {
   Header,
   RadioButtons,
   TextArea,
-  TextInput,
-} from "@pa-digital/govuk-frontend-react";
-import { useNavigate } from "react-router-dom";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import AnswerBuilder from "./answerbuilder";
+  TextInput
+} from "@pa-digital/govuk-frontend-react"
+import { useNavigate } from "react-router-dom"
+import { Controller, useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import AnswerBuilder from "./answerbuilder"
 import {
   IQuestion,
   IQuestionForm,
   mapQuestionFormToQuestion,
   questionBuilderSchema,
-  QuestionTypeData,
-} from "./IQuestion";
-import { useEffect, useState } from "react";
-import { setCookie } from "react-use-cookie";
+  QuestionTypeData
+} from "./IQuestion"
+import { useEffect, useState } from "react"
+import { setCookie } from "react-use-cookie"
 
 const QuestionBuilder = () => {
-  const navigate = useNavigate();
-  const [questionConstructor, setQuestionConstructor] = useState<IQuestion>();
-  const [showOptions, setShowOptions] = useState(false);
+  const navigate = useNavigate()
+  const [questionConstructor, setQuestionConstructor] = useState<IQuestion>()
+  const [showOptions, setShowOptions] = useState(false)
   const {
     formState: { errors },
     control,
-    handleSubmit,
+    handleSubmit
   } = useForm<IQuestionForm>({
     resolver: yupResolver(questionBuilderSchema),
     shouldFocusError: true,
@@ -38,25 +38,26 @@ const QuestionBuilder = () => {
       title: "",
       description: "",
       question: "",
-    },
-  });
+      questionType: QuestionTypeData
+    }
+  })
 
   const onSubmit = (formData: IQuestionForm) => {
-    const question = mapQuestionFormToQuestion(formData);
-    setQuestionConstructor(question);
-    return false;
-  };
+    const question = mapQuestionFormToQuestion(formData)
+    setQuestionConstructor(question)
+    return false
+  }
 
   const onSaveOptions = (options: string[]) => {
-    const currentQuestion = questionConstructor;
+    const currentQuestion = questionConstructor
     if (currentQuestion) {
-      currentQuestion.options = options;
+      currentQuestion.options = options
       if (options.length >= 1) {
-        setCookie("currentQuestion", JSON.stringify(currentQuestion));
-        return navigate("/questionSummary");
+        setCookie("currentQuestion", JSON.stringify(currentQuestion))
+        return navigate("/questionSummary")
       }
     }
-  };
+  }
 
   useEffect(() => {
     if (questionConstructor) {
@@ -64,15 +65,15 @@ const QuestionBuilder = () => {
         questionConstructor.questionType === "text" ||
         questionConstructor.questionType === "textarea"
       ) {
-        setCookie("currentQuestion", JSON.stringify(questionConstructor));
-        return navigate("/questionSummary");
+        setCookie("currentQuestion", JSON.stringify(questionConstructor))
+        return navigate("/questionSummary")
       } else {
-        setShowOptions(true);
+        setShowOptions(true)
       }
     }
-  }, [showOptions, questionConstructor, navigate]);
+  }, [showOptions, questionConstructor, navigate])
 
-  useEffect(() => {}, [questionConstructor]);
+  useEffect(() => {}, [questionConstructor])
 
   return (
     <>
@@ -86,10 +87,7 @@ const QuestionBuilder = () => {
               <Controller
                 control={control}
                 name="title"
-                render={({
-                  field: { value, onChange, onBlur },
-                  fieldState: { error },
-                }) => (
+                render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                   <TextInput
                     identifier="title"
                     label="Title"
@@ -105,10 +103,7 @@ const QuestionBuilder = () => {
               <Controller
                 control={control}
                 name="description"
-                render={({
-                  field: { value, onChange, onBlur },
-                  fieldState: { error },
-                }) => (
+                render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                   <TextArea
                     identifier="description"
                     label="Description"
@@ -125,10 +120,7 @@ const QuestionBuilder = () => {
               <Controller
                 control={control}
                 name="question"
-                render={({
-                  field: { value, onChange, onBlur },
-                  fieldState: { error },
-                }) => (
+                render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                   <TextInput
                     identifier="question"
                     label="Question"
@@ -144,17 +136,14 @@ const QuestionBuilder = () => {
               <Controller
                 control={control}
                 name="questionType"
-                render={({
-                  field: { value, onChange },
-                  fieldState: { error },
-                }) => (
+                render={({ field: { value, onChange }, fieldState: { error } }) => (
                   <RadioButtons
                     identifier="questionType"
                     header="Question type"
                     multiQuestion
                     error={error?.message}
                     compact
-                    data={QuestionTypeData}
+                    data={value}
                     onValueChange={onChange}
                   />
                 )}
@@ -167,6 +156,6 @@ const QuestionBuilder = () => {
         </main>
       </div>
     </>
-  );
-};
-export default QuestionBuilder;
+  )
+}
+export default QuestionBuilder

@@ -27,7 +27,6 @@ const schemaLookup = yup.object().shape({
   lookupAddress: yup
     .string()
     .trim()
-    .not([""], "You must select an address or perform a manual entry")
     .required("You must select an address or perform a manual entry"),
 });
 

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { IQuestionSet } from "./IQuestionSet";
-import { useNavigate } from "react-router-dom";
-import { getCookie, setCookie } from "react-use-cookie";
+import { useEffect, useState } from "react"
+import { IQuestionSet } from "./IQuestionSet"
+import { useNavigate } from "react-router-dom"
+import { getCookie, setCookie } from "react-use-cookie"
 import {
   Button,
   Content,
@@ -9,36 +9,36 @@ import {
   SummaryList,
   SummaryListItemProps,
   TabContent,
-  Tabs,
-} from "@pa-digital/govuk-frontend-react";
+  Tabs
+} from "@pa-digital/govuk-frontend-react"
 
 const QuestionSetBuilderSummary = () => {
-  const navigate = useNavigate();
-  const [questionSetData, setQuestionSetData] = useState<IQuestionSet>();
-  const [listData, setListData] = useState<SummaryListItemProps[]>([]);
-  const [tabData, setTabData] = useState<TabContent[]>([]);
-  const [showData, setShowData] = useState(false);
+  const navigate = useNavigate()
+  const [questionSetData, setQuestionSetData] = useState<IQuestionSet>()
+  const [listData, setListData] = useState<SummaryListItemProps[]>([])
+  const [tabData, setTabData] = useState<TabContent[]>([])
+  const [showData, setShowData] = useState(false)
 
   const capitalizeFirstLetter = (text: string): string => {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  };
+    return text.charAt(0).toUpperCase() + text.slice(1)
+  }
 
   const handleAddToQuestionSets = () => {
     if (questionSetData) {
-      const questionSets: IQuestionSet[] = [];
-      const cookieData = getCookie("questionSets");
+      const questionSets: IQuestionSet[] = []
+      const cookieData = getCookie("questionSets")
       if (cookieData) {
-        const existing = JSON.parse(cookieData) as unknown as IQuestionSet[];
-        existing.forEach((questionSet) => {
-          questionSets.push(questionSet);
-        });
+        const existing = JSON.parse(cookieData) as unknown as IQuestionSet[]
+        existing.forEach(questionSet => {
+          questionSets.push(questionSet)
+        })
       }
-      questionSets.push(questionSetData);
-      setCookie("currentQuestionSet", "");
-      setCookie("questionSets", JSON.stringify(questionSets));
-      return navigate("/builder");
+      questionSets.push(questionSetData)
+      setCookie("currentQuestionSet", "")
+      setCookie("questionSets", JSON.stringify(questionSets))
+      return navigate("/builder")
     }
-  };
+  }
 
   useEffect(() => {
     if (questionSetData) {
@@ -46,52 +46,67 @@ const QuestionSetBuilderSummary = () => {
         {
           key: "Title",
           value: questionSetData.title,
-          link: "/updateQuestionSetBuilder",
+          links: [
+            {
+              to: "/updateQuestionSetBuilder",
+              text: "Title"
+            }
+          ]
         },
         {
           key: "Description",
           value: questionSetData.description,
-          link: "/updateQuestionSetBuilder",
+          links: [
+            {
+              to: "/updateQuestionSetBuilder",
+              text: "Description"
+            }
+          ]
         },
         {
           key: "Areas",
           value: (
             <ul>
               {questionSetData.areas.map((area, index) => {
-                return <li key={index}>{area}</li>;
+                return <li key={index}>{area}</li>
               })}
             </ul>
           ),
-          link: "/updateQuestionSetBuilder",
-        },
-      ];
-      setListData(summaryList);
-      const tabContent: TabContent[] = [];
+          links: [
+            {
+              to: "/updateQuestionSetBuilder",
+              text: "Areas"
+            }
+          ]
+        }
+      ]
+      setListData(summaryList)
+      const tabContent: TabContent[] = []
       questionSetData.questions.forEach((question, index) => {
-        let qtValue = capitalizeFirstLetter(question.questionType);
+        let qtValue = capitalizeFirstLetter(question.questionType)
         if (question.required) {
-          qtValue += " Required";
+          qtValue += " Required"
         }
 
         const summaryData: SummaryListItemProps[] = [
           {
             key: "Title",
-            value: question.title,
+            value: question.title
           },
           {
             key: "Description",
-            value: question.description,
+            value: question.description
           },
           {
             key: "Question Type",
-            value: qtValue,
-          },
-        ];
+            value: qtValue
+          }
+        ]
         if (question.required && question.error) {
-          summaryData.push({ key: "Error", value: question.error });
+          summaryData.push({ key: "Error", value: question.error })
         }
         if (question.help) {
-          summaryData.push({ key: "Help", value: question.help });
+          summaryData.push({ key: "Help", value: question.help })
         }
         if (question.options.length > 0) {
           summaryData.push({
@@ -100,12 +115,12 @@ const QuestionSetBuilderSummary = () => {
               <>
                 <ul>
                   {question.options.map((option, index) => {
-                    return <li key={`${option}-${index}`}>{option}</li>;
+                    return <li key={`${option}-${index}`}>{option}</li>
                   })}
                 </ul>
               </>
-            ),
-          });
+            )
+          })
         }
 
         tabContent.push({
@@ -114,25 +129,25 @@ const QuestionSetBuilderSummary = () => {
             <>
               <SummaryList list={summaryData} />
             </>
-          ),
-        });
-      });
-      setTabData(tabContent);
+          )
+        })
+      })
+      setTabData(tabContent)
     }
-  }, [questionSetData]);
+  }, [questionSetData])
 
   useEffect(() => {
     if (listData && listData.length > 0 && tabData && tabData.length > 0) {
-      setShowData(true);
+      setShowData(true)
     }
-  }, [listData, tabData]);
+  }, [listData, tabData])
 
   useEffect(() => {
     var cookieData: IQuestionSet = JSON.parse(
       getCookie("currentQuestionSet")
-    ) as unknown as IQuestionSet;
-    setQuestionSetData(cookieData);
-  }, []);
+    ) as unknown as IQuestionSet
+    setQuestionSetData(cookieData)
+  }, [])
 
   return (
     <>
@@ -142,20 +157,17 @@ const QuestionSetBuilderSummary = () => {
             <main className="govuk-main-wrapper">
               <Header>Question Set builder</Header>
               <Content>
-                Please check the configuration for the {questionSetData?.title}{" "}
-                question set.
+                Please check the configuration for the {questionSetData?.title} question set.
               </Content>
               <SummaryList list={listData} />
               <Tabs heading="Questions" tabs={tabData} />
-              <Button onClick={() => handleAddToQuestionSets()}>
-                Add to Question Sets
-              </Button>
+              <Button onClick={() => handleAddToQuestionSets()}>Add to Question Sets</Button>
             </main>
           </div>
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default QuestionSetBuilderSummary;
+export default QuestionSetBuilderSummary

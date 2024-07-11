@@ -26,13 +26,13 @@
     ]
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.4",
+    "@hookform/resolvers": "^3.9.0",
     "@pa-digital/govuk-frontend-react": "^3.7.2",
     "@types/uuid": "^9.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
-    "react-hook-form": "^7.51.0",
+    "react-hook-form": "^7.52.1",
     "react-router-dom": "^6.22.3",
     "react-use-cookie": "^1.5.0",
     "sass": "^1.72.0",
