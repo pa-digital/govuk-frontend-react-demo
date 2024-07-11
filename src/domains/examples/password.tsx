@@ -1,24 +1,24 @@
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
 import {
   BackLink,
   Button,
   Content,
   ErrorSummary,
   Header,
-  TextInput,
+  PasswordInput,
   RadioButtonDataProps,
-  RadioButtons,
-} from "@pa-digital/govuk-frontend-react";
+  RadioButtons
+} from "@pa-digital/govuk-frontend-react"
 import {
   CredentialsRadioData,
   IPasswordForm,
   IPasswordRequest,
-  mapFormToRequest,
-} from "./IPassword";
-import { Helmet } from "react-helmet";
+  mapFormToRequest
+} from "./IPassword"
+import { Helmet } from "react-helmet"
 
 const schemaCredentials = yup.object().shape({
   password: yup
@@ -28,29 +28,29 @@ const schemaCredentials = yup.object().shape({
     .max(30, "Password must not exceed 30 characters"),
   enableMFA: yup
     .mixed<RadioButtonDataProps[]>()
-    .required("Decision on Multi Factor Authentication is required"),
-});
+    .required("Decision on Multi Factor Authentication is required")
+})
 
 const Credentials = () => {
-  const [submittedData, setSubmittedData] = useState<IPasswordRequest>();
+  const [submittedData, setSubmittedData] = useState<IPasswordRequest>()
   const {
     formState: { errors },
     control,
-    handleSubmit,
+    handleSubmit
   } = useForm<IPasswordForm>({
     resolver: yupResolver(schemaCredentials),
     shouldFocusError: true,
     mode: "onSubmit",
     reValidateMode: "onSubmit",
     defaultValues: {
-      password: "",
-    },
-  });
+      password: ""
+    }
+  })
 
   const onSubmit = (formData: IPasswordForm) => {
-    setSubmittedData(mapFormToRequest(formData));
-    return false;
-  };
+    setSubmittedData(mapFormToRequest(formData))
+    return false
+  }
 
   return (
     <>
@@ -66,8 +66,7 @@ const Credentials = () => {
             <div className="govuk-grid-column-full">
               <Header as="h1">Example Form - Credentials</Header>
               <Content>
-                The following form shows how a password and radio button
-                combination can be used.
+                The following form shows how a password and radio button combination can be used.
               </Content>
               <hr />
             </div>
@@ -82,19 +81,14 @@ const Credentials = () => {
                   <Controller
                     control={control}
                     name="password"
-                    render={({
-                      field: { value, onChange, onBlur },
-                      fieldState: { error },
-                    }) => (
-                      <TextInput
+                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                      <PasswordInput
                         identifier="password"
                         label="Password"
                         required
-                        inputType="password"
                         value={value}
                         multiQuestion
                         error={error?.message}
-                        autoComplete="address-line1"
                         onChange={onChange}
                         onBlur={onBlur}
                       />
@@ -103,14 +97,12 @@ const Credentials = () => {
                   <Controller
                     control={control}
                     name="enableMFA"
-                    render={({
-                      field: { value, onChange, onBlur },
-                      fieldState: { error },
-                    }) => (
+                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                       <RadioButtons
                         identifier="enableMFA"
                         header="Do you want to enable MFA?"
                         multiQuestion
+                        error={error?.message}
                         data={CredentialsRadioData}
                         onValueChange={onChange}
                       />
@@ -131,16 +123,14 @@ const Credentials = () => {
                 </div>
               </div>
               <div className="govuk-grid-column-full">
-                <Content as="pre">
-                  {JSON.stringify(submittedData, null, 2)}
-                </Content>
+                <Content as="pre">{JSON.stringify(submittedData, null, 2)}</Content>
               </div>
             </>
           )}
         </main>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Credentials;
+export default Credentials

@@ -48,6 +48,13 @@ $foreground: #000000;
           color: $foreground;
         }
       }
+
+      &.govuk-password-input__toggle {
+        &.govuk-js-password-input-toggle {
+          height: 2.2em;
+          line-height: 0em;
+        }
+      }
     }
 
     &.govuk-button--warning {

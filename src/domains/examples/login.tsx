@@ -1,18 +1,19 @@
-import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Helmet } from "react-helmet";
-import { ILoginForm, ILoginRequest, mapFormToRequest } from "./ILogin";
-import { useState } from "react";
-import "../../styling/nihr.scss";
+import { Controller, useForm } from "react-hook-form"
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { Helmet } from "react-helmet"
+import { ILoginForm, ILoginRequest, mapFormToRequest } from "./ILogin"
+import { useState } from "react"
+import "../../styling/nihr.scss"
 import {
   BackLink,
   Header,
   Content,
   ErrorSummary,
   TextInput,
-  Button,
-} from "@pa-digital/govuk-frontend-react";
+  PasswordInput,
+  Button
+} from "@pa-digital/govuk-frontend-react"
 
 const schema = yup.object().shape({
   email: yup
@@ -26,15 +27,15 @@ const schema = yup.object().shape({
     .string()
     .trim()
     .required("Password is required")
-    .min(12, "Password must be more than 12 characters"),
-});
+    .min(12, "Password must be more than 12 characters")
+})
 
 const Login = () => {
-  const [submittedData, setSubmittedData] = useState<ILoginRequest>();
+  const [submittedData, setSubmittedData] = useState<ILoginRequest>()
   const {
     formState: { errors },
     control,
-    handleSubmit,
+    handleSubmit
   } = useForm<ILoginForm>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
@@ -42,14 +43,14 @@ const Login = () => {
     reValidateMode: "onSubmit",
     defaultValues: {
       email: "",
-      password: "",
-    },
-  });
+      password: ""
+    }
+  })
 
   const onSubmit = (formData: ILoginForm) => {
-    setSubmittedData(mapFormToRequest(formData));
-    return false;
-  };
+    setSubmittedData(mapFormToRequest(formData))
+    return false
+  }
 
   return (
     <>
@@ -65,9 +66,8 @@ const Login = () => {
             <div className="govuk-grid-column-full">
               <Header as="h1">Branding</Header>
               <Content>
-                Branding of the GDS components can be achieved with care to
-                ensure WCAG Compliance remains. Here is an example of an NIHR
-                branded implementation.
+                Branding of the GDS components can be achieved with care to ensure WCAG Compliance
+                remains. Here is an example of an NIHR branded implementation.
               </Content>
               <hr />
             </div>
@@ -81,10 +81,7 @@ const Login = () => {
                 <Controller
                   control={control}
                   name="email"
-                  render={({
-                    field: { value, onChange, onBlur },
-                    fieldState: { error },
-                  }) => (
+                  render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                     <TextInput
                       identifier="email"
                       label="Email"
@@ -101,14 +98,10 @@ const Login = () => {
                 <Controller
                   control={control}
                   name="password"
-                  render={({
-                    field: { value, onChange, onBlur },
-                    fieldState: { error },
-                  }) => (
-                    <TextInput
+                  render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                    <PasswordInput
                       identifier="password"
                       label="Password"
-                      inputType="password"
                       required
                       multiQuestion
                       value={value}
@@ -131,16 +124,14 @@ const Login = () => {
                 </div>
               </div>
               <div className="govuk-grid-column-full">
-                <Content as="pre">
-                  {JSON.stringify(submittedData, null, 2)}
-                </Content>
+                <Content as="pre">{JSON.stringify(submittedData, null, 2)}</Content>
               </div>
             </>
           )}
         </main>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
