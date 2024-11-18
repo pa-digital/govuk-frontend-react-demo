@@ -34,6 +34,9 @@ const Examples = () => {
                   <NavLink to="/nihr" text="NIHR Branded example" />
                 </li>
                 <li>
+                  <NavLink to="/pretregister" text="Pret A Manger Branded example" />
+                </li>
+                <li>
                   <NavLink to="/builder" text="Question Set Builder example" />
                 </li>
                 <li>

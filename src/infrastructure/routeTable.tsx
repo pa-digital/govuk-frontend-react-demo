@@ -27,6 +27,7 @@ import Header from "./header"
 import Survey from "domains/builderDemo/survey"
 import ProtoBuilder from "domains/prototype/protobuilder"
 import NIHRBranded from "domains/examples/nihrBranded"
+import PretRegister from "domains/examples/register"
 import SiteSummaryCardList from "domains/components/SiteSummaryCardList"
 import SiteSummaryList from "domains/components/SiteSummaryList"
 
@@ -53,6 +54,7 @@ const RouteTable = () => {
         <Route path="/register" element={<ContactUs />} />
         <Route path="/address" element={<Address />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/pretregister" element={<PretRegister />} />
         <Route path="/nihr" element={<NIHRBranded />} />
         <Route path="/credentials" element={<Credentials />} />
         <Route path="/builder" element={<Builder />} />

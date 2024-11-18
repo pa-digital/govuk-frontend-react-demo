@@ -6,7 +6,10 @@ import {
   RadioButtons,
   TextInput,
   SummaryListItemProps,
-  SummaryList
+  SummaryList,
+  CheckBoxList,
+  CheckBoxDataProps,
+  RadioButtonDataProps
 } from "@pa-digital/govuk-frontend-react"
 import { useState } from "react"
 
@@ -62,6 +65,90 @@ const ProtoBuilder = () => {
     setFormData(formData)
   }
 
+  const InterestsData: CheckBoxDataProps[] = [
+    {
+      text: "React",
+      value: "react"
+    },
+    {
+      text: "Node JS",
+      value: "nodejs"
+    },
+    {
+      text: "Astro",
+      value: "astro"
+    },
+    {
+      text: "Accessibility",
+      value: "accessibility"
+    }
+  ]
+
+  const WhereDoYouLiveExtData: RadioButtonDataProps[] = [
+    {
+      text: "England",
+      value: "England",
+      checked: true
+    },
+    {
+      text: "Scotland",
+      value: "Scotland"
+    },
+    {
+      text: "Wales",
+      value: "Wales"
+    },
+    {
+      text: "Northern Ireland",
+      value: "NIreland"
+    },
+    {
+      text: "or",
+      value: "",
+      divider: true
+    },
+    {
+      text: "I am a British citizen living abroad",
+      value: "Abroad"
+    }
+  ]
+
+  const NameChangeData: RadioButtonDataProps[] = [
+    {
+      text: "Yes",
+      value: "True"
+    },
+    {
+      text: "No",
+      value: "false"
+    }
+  ]
+
+  const ExclusiveCheckBoxData: CheckBoxDataProps[] = [
+    {
+      text: "France",
+      value: "France"
+    },
+    {
+      text: "Portugal",
+      value: "Portugal"
+    },
+    {
+      text: "Spain",
+      value: "Spain"
+    },
+    {
+      text: "or",
+      value: "",
+      divider: true
+    },
+    {
+      text: "No, I will not be travelling to any of these countries",
+      value: "None",
+      exclusive: true
+    }
+  ]
+
   return (
     <div className="govuk-width-container">
       <main className="govuk-main-wrapper">
@@ -77,6 +164,56 @@ const ProtoBuilder = () => {
                 onChange={onChange}
                 onBlur={onBlur}
               />
+              <TextInput
+                identifier="lastname"
+                label="Last name"
+                required
+                multiQuestion
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+
+              <TextInput
+                identifier="email"
+                label="Email address"
+                inputType="email"
+                required
+                multiQuestion
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+              <DateInput
+                identifier="dateOfBirth"
+                label="Date of birth"
+                required
+                multiQuestion
+                onValueChange={onChange}
+              />
+              <TextCounter
+                identifier="text-counter"
+                label="Can you provide more detail?"
+                hint="Please provide this information in as much detail as you can"
+                required
+                maxCount={50}
+                counterType="character"
+                onChange={onChange}
+                onBlur={onBlur}
+              />
+              <CheckBoxList
+                identifier="interests"
+                header="Which of these interest you"
+                hint="Select all that apply"
+                data={InterestsData}
+                multiQuestion
+                onValueChange={onChange}
+              />
+              <RadioButtons
+                identifier="where-are-you-going"
+                header="Where are you going on holiday?"
+                data={WhereDoYouLiveExtData}
+                onValueChange={onChange}
+              />
+              <Button type="submit">Submit</Button>
             </form>
           </div>
         </div>

@@ -11,13 +11,9 @@ import {
   Details,
   Inset,
   Notification,
-  Select,
-  NavLink
+  Select
 } from "@pa-digital/govuk-frontend-react"
 import { Helmet } from "react-helmet"
-import caseStudy1 from "../../assets/nihr/diploma_mad_case_study_website.jpg"
-import pills from "../../assets/nihr/cap_it_mad_case_study_website_crop.jpg"
-import pregnancy from "../../assets/nihr/pregnancy-sickness.jpg"
 
 const NIHRBranded = () => {
   const handler = (e: any) => {}
@@ -235,94 +231,6 @@ const NIHRBranded = () => {
                     }
                   ]}
                 />
-              </div>
-            </div>
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-one-half">
-                <div className="nihr-card">
-                  <div className="nihr-card-img">
-                    <img src={caseStudy1} className="img-fluid" alt="Case study" />
-                  </div>
-                  <div className="nihr-card-body-wrapper">
-                    <div className="nihr-card-body">
-                      <Header as="h3">
-                        <NavLink
-                          to="/"
-                          text="NHS programme linked to 20% reduction in risk of diabetes"
-                        />
-                      </Header>
-                      <Content>
-                        An NIHR-funded evaluation showed referring people with pre-diabetes to the
-                        NHS Diabetes Prevention Programme cut their risk by 20%.
-                      </Content>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="govuk-grid-column-one-half">
-                <div className="nihr-card">
-                  <div className="nihr-card-img">
-                    <img src={pills} className="img-fluid" alt="Pills" />
-                  </div>
-                  <div className="nihr-card-body-wrapper">
-                    <div className="nihr-card-body">
-                      <Header as="h3">
-                        <NavLink
-                          to="/"
-                          text="Children’s treatment time for pneumonia halved in antibiotic research"
-                        />
-                      </Header>
-                      <Content>
-                        The CAP-IT trial of antibiotic use in young children with pneumonia has
-                        delivered practice-changing results, showing the length of treatment can be
-                        reduced.
-                      </Content>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-full">
-                <div className="nihr-hero">
-                  <div className="nihr-hero-text">
-                    <Header as="h2">
-                      Study discovers cause of pregnancy sickness and potential treatment
-                    </Header>
-                    <Content>
-                      A new study supported by NIHR Cambridge Biomedical Research Centre (BRC) has
-                      shown why many women experience nausea and vomiting during pregnancy and why
-                      some women become so sick they need to be admitted to hospital.
-                    </Content>
-                    <NavLink to="/" text="Read the full news story" />
-                  </div>
-                  <div className="nihr-hero-image">
-                    <img src={pregnancy} alt="Pregnant lady" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-full">
-                <div className="nihr-stack">
-                  <div className="nihr-stack-text-wrapper">
-                    <div className="nihr-stack-text">
-                      <Header as="h2">
-                        Study discovers cause of pregnancy sickness and potential treatment
-                      </Header>
-                      <Content>
-                        A new study supported by NIHR Cambridge Biomedical Research Centre (BRC) has
-                        shown why many women experience nausea and vomiting during pregnancy and why
-                        some women become so sick they need to be admitted to hospital.
-                      </Content>
-                      <NavLink to="/" text="Read the full news story" />
-                    </div>
-                  </div>
-
-                  <div className="nihr-stack-image">
-                    <img src={pregnancy} alt="Pregnant lady" />
-                  </div>
-                </div>
               </div>
             </div>
           </div>

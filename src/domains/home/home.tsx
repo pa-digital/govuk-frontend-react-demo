@@ -92,7 +92,13 @@ const Home = () => {
                             <NavLink to="/credentials" text="Credential entry example" />
                           </li>
                           <li>
-                            <NavLink to="/login" text="Branded Login screen example" />
+                            <NavLink to="/login" text="NIHR branded Login screen example" />
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/pretregister"
+                              text="Pret A Manger branded Register screen example"
+                            />
                           </li>
                           <li>
                             <NavLink to="/builder" text="Question Set Builder example" />
