@@ -1,6 +1,6 @@
 {
   "name": "govuk-frontend-react-demo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "start": "vite",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
-    "@pa-digital/govuk-frontend-react": "^3.7.2",
+    "@pa-digital/govuk-frontend-react": "^3.7.3",
     "@types/uuid": "^9.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

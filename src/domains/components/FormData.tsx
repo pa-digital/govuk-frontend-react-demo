@@ -792,3 +792,206 @@ export const PartialOpenAccordionData: AccordionElement[] = [
     )
   }
 ]
+
+export const ConditionalContact: RadioButtonDataProps[] = [
+  {
+    text: "Email",
+    value: "email",
+    conditionalInput: {
+      context: "contact-by-email",
+      identifier: "emailAddress",
+      label: "Email address",
+      inputType: "email"
+    }
+  },
+  {
+    text: "Phone",
+    value: "phone",
+    conditionalInput: {
+      context: "contact-by-phone",
+      identifier: "phone",
+      label: "Phone number",
+      inputMode: "numeric"
+    }
+  },
+  {
+    text: "Do not contact me",
+    value: "dnc"
+  }
+]
+
+export const ConditionalContactWithDivider: RadioButtonDataProps[] = [
+  {
+    text: "Email",
+    value: "email",
+    conditionalInput: {
+      context: "contact-by-email",
+      identifier: "emailAddress",
+      label: "Email address",
+      inputType: "email"
+    }
+  },
+  {
+    text: "Phone",
+    value: "phone",
+    conditionalInput: {
+      context: "contact-by-phone",
+      identifier: "phone",
+      label: "Phone number",
+      inputMode: "numeric"
+    }
+  },
+  {
+    text: "or",
+    value: "",
+    divider: true
+  },
+  {
+    text: "Do not contact me",
+    value: "dnc"
+  }
+]
+
+export const ConditionalContactWithHint: RadioButtonDataProps[] = [
+  {
+    text: "Email",
+    value: "email",
+    conditionalInput: {
+      context: "contact-by-email",
+      identifier: "emailAddress",
+      label: "Email address",
+      inputType: "email",
+      hint: "This is the email you registered with"
+    }
+  },
+  {
+    text: "Phone",
+    value: "phone",
+    conditionalInput: {
+      context: "contact-by-phone",
+      identifier: "phone",
+      label: "Phone number",
+      inputMode: "numeric",
+      hint: "This can be a mobile or landline"
+    }
+  },
+  {
+    text: "Do not contact me",
+    value: "dnc"
+  }
+]
+
+export const PrePopulatedConditionalContact: RadioButtonDataProps[] = [
+  {
+    text: "Email",
+    value: "email",
+    checked: true,
+    conditionalInput: {
+      context: "contact-by-email",
+      identifier: "emailAddress",
+      label: "Email address",
+      inputType: "email",
+      value: "test@test.com"
+    }
+  },
+  {
+    text: "Phone",
+    value: "phone",
+    conditionalInput: {
+      context: "contact-by-phone",
+      identifier: "phone",
+      label: "Phone number",
+      inputMode: "numeric"
+    }
+  },
+  {
+    text: "Do not contact me",
+    value: "dnc"
+  }
+]
+
+export const PrefixedConditionalContact: RadioButtonDataProps[] = [
+  {
+    text: "Sterling (GBP)",
+    value: "gbp",
+    conditionalInput: {
+      context: "payment-in-sterling",
+      identifier: "sterling-payment",
+      label: "Sterling (GBP) Amount",
+      prefix: "£"
+    }
+  },
+  {
+    text: "Euro (EUR)",
+    value: "eur",
+    conditionalInput: {
+      context: "payment-in-euros",
+      identifier: "euro-payment",
+      label: "Euro (EUR) Amount",
+      prefix: "€"
+    }
+  },
+  {
+    text: "US Dollars (USD)",
+    value: "usd",
+    conditionalInput: {
+      context: "payment-in-usd",
+      identifier: "usd-payment",
+      label: "US Dollars (USD) Amount",
+      prefix: "$"
+    }
+  }
+]
+
+export const SuffixedConditionalContact: RadioButtonDataProps[] = [
+  {
+    text: "Miles Per Hour",
+    value: "mph",
+    conditionalInput: {
+      context: "speed-in-mph",
+      identifier: "mph-speed",
+      label: "Miles per hour",
+      suffix: "mph"
+    }
+  },
+  {
+    text: "Kilometers Per Hour",
+    value: "kph",
+    conditionalInput: {
+      context: "speed-in-kph",
+      identifier: "kph-speed",
+      label: "Kilometers per hour",
+      suffix: "kph"
+    }
+  }
+]
+
+export const ErrorConditionalContact: RadioButtonDataProps[] = [
+  {
+    text: "Email",
+    value: "email",
+    checked: true,
+    conditionalInput: {
+      context: "contact-by-email",
+      identifier: "emailAddress",
+      label: "Email address",
+      inputType: "email",
+      value: "",
+      error: "You must provide a valid email address"
+    }
+  },
+  {
+    text: "Phone",
+    value: "phone",
+    conditionalInput: {
+      context: "contact-by-phone",
+      identifier: "phone",
+      label: "Phone number",
+      inputMode: "numeric"
+    }
+  },
+  {
+    text: "Do not contact me",
+    value: "dnc"
+  }
+]
