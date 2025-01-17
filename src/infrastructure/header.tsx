@@ -1,5 +1,4 @@
-import { Navigation, NavigationLink } from "@pa-digital/govuk-frontend-react"
-import { Link } from "react-router-dom"
+import { NavigationLink, ServiceNavigation } from "@pa-digital/govuk-frontend-react"
 
 const Header = () => {
   const navLinks: NavigationLink[] = [
@@ -58,7 +57,7 @@ const Header = () => {
     }
   ]
   return (
-    <Navigation
+    <ServiceNavigation
       links={navLinks}
       identifier="header-nav"
       serviceNameDetails={{

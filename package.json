@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
-    "@pa-digital/govuk-frontend-react": "^3.7.3",
+    "@pa-digital/govuk-frontend-react": "^3.7.5",
     "@types/uuid": "^9.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
